@@ -68,6 +68,20 @@ services:
     depends_on:
       - mongodb
       - eureka-server
+  config-server:
+    build:
+      context: ./config-server
+
+    container_name: config-server
+
+    ports:
+      - "8888:8888"
+
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+
+    depends_on:
+      - eureka-server
 
 volumes:
   mysql_data:
