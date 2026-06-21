@@ -220,7 +220,7 @@ docker compose down
 
 # 📸 Screenshots
 
-## Eureka Dashboard
+<img width="1717" height="322" alt="image" src="https://github.com/user-attachments/assets/6477e00e-3fd3-4865-9873-4fd9dcbde219" />
 
 _Add screenshot here_
 
@@ -228,13 +228,65 @@ _Add screenshot here_
 
 ## Docker Containers
 
-_Add screenshot here_
+<img width="742" height="302" alt="image" src="https://github.com/user-attachments/assets/fe877de3-4bfa-438c-9ff8-611fb474b367" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/91c9bcfa-3710-4a24-95ee-9642f00a3ad1" />
+
 
 ---
 
 ## Angular Application
 
-_Add screenshot here_
+<img width="1917" height="911" alt="image" src="https://github.com/user-attachments/assets/18a51390-96c2-4a54-98f6-fbccac2ff804" />
+<img width="1917" height="912" alt="image" src="https://github.com/user-attachments/assets/dc1d85c4-bb80-4820-a755-219c5fc7e7c7" />
+<img width="1896" height="912" alt="image" src="https://github.com/user-attachments/assets/cdb0942f-c953-47d1-aafb-ca889c1eb18d" />
+<img width="1917" height="900" alt="image" src="https://github.com/user-attachments/assets/e7a0cf0f-204a-4962-88c7-d9d16a5de467" />
+
+---
+
+---
+
+# 📚 API Documentation
+
+ALETHEIA provides centralized API documentation through **Swagger OpenAPI** exposed by the **API Gateway**.
+
+Instead of accessing each microservice separately, developers can explore and test APIs from a single entry point.
+
+### Swagger Gateway URL
+
+```text
+http://localhost:8080/webjars/swagger-ui/index.html
+```
+
+### Benefits
+
+- Centralized API documentation
+- Interactive API testing
+- Easier integration between services
+- Single access point through the API Gateway
+
+### Available APIs
+
+- Authentication APIs
+- User Management APIs
+- Instructor Request APIs
+- CV Analysis APIs
+
+### Architecture
+
+```text
+USER-AUTH-SERVICE
+        │
+        ▼
+   OpenAPI Docs
+        │
+        ▼
+     Gateway
+        │
+        ▼
+ Swagger UI
+```
+
+This implementation allows developers and testers to access all exposed endpoints through a unified documentation portal.
 
 ---
 
@@ -262,11 +314,10 @@ ALETHEIA was developed as an academic integration project focused on:
 
 <div align="center">
 
-<img width="1717" height="322" alt="image" src="https://github.com/user-attachments/assets/6477e00e-3fd3-4865-9873-4fd9dcbde219" />
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/91c9bcfa-3710-4a24-95ee-9642f00a3ad1" />
 
-<img width="1917" height="900" alt="image" src="https://github.com/user-attachments/assets/e7a0cf0f-204a-4962-88c7-d9d16a5de467" />
+
+
 
 
 
