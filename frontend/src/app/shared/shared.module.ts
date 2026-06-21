@@ -5,6 +5,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { CourseCardComponent } from './course-card/course-card.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { SidebarAdminComponent } from './sidebar-admin/sidebar-admin.component';
+import { NavbarLoginComponent } from './navbar-login/navbar-login.component';
+import { SidebarSettingsComponent } from './sidebar-settings/sidebar-settings.component';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 
 
 
@@ -12,7 +17,12 @@ import { CourseCardComponent } from './course-card/course-card.component';
   declarations: [
     NavbarComponent,
     FooterComponent,
-    CourseCardComponent
+    CourseCardComponent,
+    SidebarComponent,
+    SidebarAdminComponent,
+    NavbarLoginComponent,
+    SidebarSettingsComponent,
+    ConfirmDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -22,9 +32,12 @@ import { CourseCardComponent } from './course-card/course-card.component';
   exports: [
     NavbarComponent,
     FooterComponent,
+    SidebarComponent,
     CourseCardComponent,
     ReactiveFormsModule,
-    RouterModule
+    RouterModule,
+    SidebarAdminComponent,
+    ConfirmDialogComponent,
   ]
 })
 export class SharedModule { }

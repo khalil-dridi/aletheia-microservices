@@ -1,0 +1,24 @@
+<div class="confirm-dialog-overlay" *ngIf="visible" (click)="onOverlayClick($event)">
+  <div class="confirm-dialog-modal">
+    <div class="confirm-dialog-header">
+      <h2 class="confirm-dialog-title">{{ title }}</h2>
+    </div>
+
+    <div class="confirm-dialog-body">
+      <p class="confirm-dialog-message">{{ message }}</p>
+    </div>
+
+    <div class="confirm-dialog-footer">
+      <button
+        class="confirm-dialog-btn confirm-dialog-btn--cancel"
+        (click)="onCancel()">
+        {{ cancelText }}
+      </button>
+      <button
+        class="confirm-dialog-btn confirm-dialog-btn--confirm"
+        (click)="onConfirm()">
+        {{ confirmText }}
+      </button>
+    </div>
+  </div>
+</div>

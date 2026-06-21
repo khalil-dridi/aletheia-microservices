@@ -1,0 +1,69 @@
+<section class="upload-cv">
+  <div class="upload-cv__card">
+    <header class="upload-cv__header">
+      <p class="upload-cv__eyebrow">Instructor Application</p>
+      <h1>Upload Your CV</h1>
+      <p class="upload-cv__subtitle">
+        Submit a professional CV in PDF format and optionally share a short motivation.
+      </p>
+    </header>
+
+    <label
+      class="drop-zone"
+      [class.drop-zone--active]="isDragging"
+      [class.drop-zone--has-file]="selectedFile"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave($event)"
+      (drop)="onDrop($event)"
+    >
+      <input type="file" accept="application/pdf,.pdf" (change)="onFileInputChange($event)" />
+
+      <div class="drop-zone__icon" aria-hidden="true">
+        <span>PDF</span>
+      </div>
+      <h3>Drag &amp; drop your CV here</h3>
+      <p>or <span>browse files</span></p>
+    </label>
+
+    <div *ngIf="selectedFile" class="file-preview" role="status" aria-live="polite">
+      <div class="file-preview__meta">
+        <span class="file-preview__icon" aria-hidden="true">📄</span>
+        <div>
+          <p class="file-preview__name">{{ selectedFile.name }}</p>
+          <p class="file-preview__size">{{ formatFileSize(selectedFile) }}</p>
+        </div>
+      </div>
+      <button type="button" class="file-preview__remove" (click)="removeFile()">
+        Remove
+      </button>
+    </div>
+
+    <div class="form-group">
+      <label for="motivation">Motivation (optional)</label>
+      <textarea
+        id="motivation"
+        rows="5"
+        [value]="motivation"
+        (input)="onMotivationChange($event)"
+        placeholder="Tell us why you want to become an instructor..."
+      ></textarea>
+    </div>
+
+    <p *ngIf="successMessage" class="toast toast--success" role="status" aria-live="polite">
+      {{ successMessage }}
+    </p>
+    <p *ngIf="errorMessage" class="toast toast--error" role="alert">
+      {{ errorMessage }}
+    </p>
+
+    <button
+      type="button"
+      class="submit-btn"
+      [disabled]="!selectedFile || isSubmitting"
+      (click)="submitRequest()"
+    >
+      <span *ngIf="!isSubmitting">Submit Request</span>
+      <span *ngIf="isSubmitting">Uploading...</span>
+    </button>
+  </div>
+</section>

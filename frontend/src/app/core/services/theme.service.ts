@@ -3,7 +3,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 export type Theme = 'light' | 'dark';
 
-const STORAGE_KEY = 'aletheia-theme';
+/** localStorage key for theme preference (values: "light" | "dark") */
+const STORAGE_KEY = 'theme';
 
 @Injectable({
   providedIn: 'root'
@@ -51,10 +52,11 @@ export class ThemeService {
 
   private applyTheme(isDark: boolean): void {
     if (typeof document === 'undefined' || !document.body) return;
+    document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
     if (isDark) {
-      document.body.classList.add('dark-theme');
+      document.body.classList.add('dark-theme', 'dark-mode');
     } else {
-      document.body.classList.remove('dark-theme');
+      document.body.classList.remove('dark-theme', 'dark-mode');
     }
   }
 }

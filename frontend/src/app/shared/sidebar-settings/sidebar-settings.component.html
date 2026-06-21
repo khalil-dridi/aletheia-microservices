@@ -1,0 +1,71 @@
+<aside class="settings-sidebar" aria-label="Settings sidebar">
+  <div class="settings-sidebar__shell">
+    <header class="settings-sidebar__header" aria-label="Settings header">
+      <p class="settings-sidebar__eyebrow">Workspace Settings</p>
+      <h2 class="settings-sidebar__title">Account Settings</h2>
+      <p class="settings-sidebar__subtitle">
+        Manage your personal information, security, and profile identity.
+      </p>
+    </header>
+
+   
+
+    <nav class="settings-sidebar__nav" aria-label="Settings sections">
+      <a class="settings-item settings-item--active" aria-current="page" routerLink="/user/profile">
+        <span class="settings-item__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="1.8" />
+            <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="settings-item__content" >
+          <span class="settings-item__title" >Profile Information</span>
+          <span class="settings-item__desc">Update name, surname, and bio</span>
+        </span>
+      </a>
+
+      <a class="settings-item" routerLink="/user/photo" >
+        <span class="settings-item__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M20 7h-3.2l-1.4-2h-7L7 7H4v11h16V7Z" stroke="currentColor" stroke-width="1.8" />
+            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8" />
+          </svg>
+        </span>
+        <span class="settings-item__content" >
+          <span class="settings-item__title">Profile Photo</span>
+          <span class="settings-item__desc">Change avatar image</span>
+        </span>
+      </a>
+
+      <a class="settings-item" routerLink="/user/change-password">
+        <span class="settings-item__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M7 10V8a5 5 0 0 1 10 0v2" stroke="currentColor" stroke-width="1.8" />
+            <rect x="5" y="10" width="14" height="10" rx="2" stroke="currentColor" stroke-width="1.8" />
+            <circle cx="12" cy="15" r="1" fill="currentColor" />
+          </svg>
+        </span>
+        <span class="settings-item__content">
+          <span class="settings-item__title">Security</span>
+          <span class="settings-item__desc">Change password and account safety</span>
+        </span>
+      </a>
+    </nav>
+
+    <section class="settings-sidebar__support" aria-label="Contact admin" routerLink="/user/update-cv">
+      <div class="settings-sidebar__support-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M8 10h8M8 14h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M5 6a3 3 0 0 1 3-3h8a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H11l-4 4v-4H8a3 3 0 0 1-3-3V6Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+        </svg>
+      </div>
+      <div class="settings-sidebar__support-content">
+        <p class="settings-sidebar__support-title">Contact Admin</p>
+        <p class="settings-sidebar__support-text">
+          Need help with your account settings? Our support team is here to assist you.
+        </p>
+        <a class="settings-sidebar__support-link" href="#">Support / Help / Contact</a>
+      </div>
+    </section>
+  </div>
+</aside>

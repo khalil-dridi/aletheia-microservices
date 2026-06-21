@@ -4,6 +4,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { AuthRoutingModule } from './auth-routing.module';
+import { CompleteProfileComponent } from './complete-profile/complete-profile.component';
 
 
 
@@ -11,6 +12,7 @@ import { AuthRoutingModule } from './auth-routing.module';
   declarations: [
     LoginComponent,
     RegisterComponent,
+    CompleteProfileComponent,
   ],
   imports: [
     CommonModule,

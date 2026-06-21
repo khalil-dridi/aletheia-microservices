@@ -9,11 +9,18 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule,  } from '@angular/forms';
 import { AuthModule } from './auth/auth.module';
+import { PublicLayoutComponent } from './layouts/public-layout/public-layout.component';
+import { UserLayoutComponent } from './layouts/user-layout/user-layout.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { BackOfficeModule } from './back-office/back-office.module';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PublicLayoutComponent,
+    UserLayoutComponent,
+    AdminLayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -22,7 +29,8 @@ import { AuthModule } from './auth/auth.module';
     SharedModule,
     FormsModule  ,
     AuthModule,
-    HttpClientModule   
+    HttpClientModule   ,
+    BackOfficeModule   
 
   ],
   providers: [

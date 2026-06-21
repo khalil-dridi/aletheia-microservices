@@ -1,0 +1,149 @@
+<section class="request-list">
+  <div class="request-list__card">
+    <header class="request-list__header">
+      <div>
+        <p class="request-list__eyebrow">Admin Panel</p>
+        <h1>Instructor Requests</h1>
+        <p class="request-list__subtitle">Review CV submissions and validate instructor applications.</p>
+      </div>
+      <button type="button" class="refresh-btn" (click)="loadRequests()" [disabled]="isLoading">
+        Refresh
+      </button>
+    </header>
+
+    <p *ngIf="successMessage" class="toast toast--success" role="status" aria-live="polite">
+      {{ successMessage }}
+    </p>
+    <p *ngIf="errorMessage" class="toast toast--error" role="alert">
+      {{ errorMessage }}
+    </p>
+
+    <div *ngIf="isLoading" class="state state--loading">
+      <span class="spinner" aria-hidden="true"></span>
+      <p>Loading requests...</p>
+    </div>
+
+    <div *ngIf="!isLoading && requests.length === 0" class="state state--empty">
+      <p>No instructor requests available at the moment.</p>
+    </div>
+
+    <div *ngIf="!isLoading && requests.length > 0" class="table-wrap">
+      <table class="request-table">
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Status</th>
+            <th>Submitted</th>
+            <th>CV</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let request of requests; trackBy: trackByRequestId">
+            <td class="user-cell">{{ request.userName }}</td>
+            <td>
+              <span
+                class="status-badge"
+                [class.status-badge--pending]="request.status === 'PENDING'"
+                [class.status-badge--approved]="request.status === 'APPROVED'"
+                [class.status-badge--rejected]="request.status === 'REJECTED'"
+              >
+                {{ request.status }}
+              </span>
+            </td>
+            <td>{{ formatCreatedAt(request.createdAt) }}</td>
+            <td class="cv-cell">
+              <div class="cv-actions">
+                <button type="button" class="cv-btn" (click)="openCv(request.cvUrl)">
+                  Open CV
+                </button>
+                <button
+                  type="button"
+                  class="cv-btn cv-btn--analyze"
+                  (click)="openCvAnalysis(request)"
+                  [disabled]="!request.cvUrl || cvAnalyzingRequestId === request.id"
+                  [attr.aria-busy]="cvAnalyzingRequestId === request.id"
+                >
+                  {{
+                    cvAnalyzingRequestId === request.id ? 'Analyzing…' : 'Analyze CV'
+                  }}
+                </button>
+              </div>
+            </td>
+            <td>
+              <div class="actions" *ngIf="request.status === 'PENDING'; else resolvedActions">
+                <button
+                  type="button"
+                  class="action-btn action-btn--approve"
+                  (click)="approveRequest(request)"
+                  [disabled]="actionLoadingId === request.id"
+                >
+                  {{ actionLoadingId === request.id ? 'Working...' : 'Approve' }}
+                </button>
+                <button
+                  type="button"
+                  class="action-btn action-btn--reject"
+                  (click)="rejectRequest(request)"
+                  [disabled]="actionLoadingId === request.id"
+                >
+                  {{ actionLoadingId === request.id ? 'Working...' : 'Reject' }}
+                </button>
+              </div>
+              <ng-template #resolvedActions>
+                <span class="resolved-label">No action required</span>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div
+    class="cv-modal-overlay"
+    *ngIf="cvAnalysisOpen"
+    (click)="onCvModalBackdrop($event)"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="cv-analysis-title"
+  >
+    <div class="cv-modal" (click)="$event.stopPropagation()">
+      <header class="cv-modal__header">
+        <div>
+          <p class="cv-modal__eyebrow">CV analysis</p>
+          <h2 id="cv-analysis-title" class="cv-modal__title">
+            {{ cvAnalysisSubjectName }}
+          </h2>
+        </div>
+        <button type="button" class="cv-modal__close" (click)="closeCvAnalysis()" aria-label="Close">
+          ×
+        </button>
+      </header>
+
+      <div class="cv-modal__body">
+        <div *ngIf="cvAnalysisLoading" class="cv-modal__loading" aria-live="polite" aria-busy="true">
+          <div class="cv-modal__spinner-wrap">
+            <span class="cv-modal__spinner"></span>
+          </div>
+          <p class="cv-modal__loading-title">Analyzing CV…</p>
+          <p class="cv-modal__hint">Please wait — this can take up to a minute.</p>
+          <div class="cv-modal__dots" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <div *ngIf="!cvAnalysisLoading && cvAnalysisError" class="cv-modal__panel cv-modal__panel--error" role="alert">
+          {{ cvAnalysisError }}
+        </div>
+
+        <div *ngIf="!cvAnalysisLoading && cvAnalysisResult && !cvAnalysisError" class="cv-modal__panel cv-modal__panel--result">
+          <pre class="cv-modal__pre">{{ cvAnalysisResult }}</pre>
+        </div>
+      </div>
+
+      <footer class="cv-modal__footer">
+        <button type="button" class="cv-modal__btn" (click)="closeCvAnalysis()">Close</button>
+      </footer>
+    </div>
+  </div>
+</section>

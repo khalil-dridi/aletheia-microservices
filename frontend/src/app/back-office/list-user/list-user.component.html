@@ -1,0 +1,270 @@
+<div class="user-dashboard">
+
+  <header class="dashboard-header">
+    <div class="dashboard-header-text">
+      <h1 class="dashboard-title">Users</h1>
+      <p class="dashboard-subtitle" *ngIf="!loading && !error">{{ totalElements }} registered</p>
+    </div>
+    <div class="search-bar">
+      <div class="search-toolbar-wrap" #filterWrap>
+        <div class="search-toolbar">
+          <div class="search-input-wrap">
+            <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="search" name="userSearch" class="search-input" placeholder="Search users…"
+              autocomplete="off" [(ngModel)]="searchQuery" (ngModelChange)="onSearchInput()"
+              aria-label="Search users by name or email" enterkeyhint="search">
+            <button type="button" class="search-clear" *ngIf="searchQuery" (click)="clearSearch()"
+              aria-label="Clear search">×</button>
+          </div>
+          <button type="button" class="btn btn-filter" (click)="toggleFilterPanel()"
+            [class.btn-filter-active]="hasActiveFilters" [attr.aria-expanded]="filterPanelOpen"
+            aria-haspopup="dialog" aria-controls="user-filter-panel">
+            <svg class="btn-filter-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              aria-hidden="true">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            Filters
+          </button>
+        </div>
+
+        <div class="filter-panel" id="user-filter-panel" *ngIf="filterPanelOpen" role="dialog"
+          aria-label="Filter and sort users" (click)="$event.stopPropagation()">
+          <div class="filter-panel-field">
+            <label class="filter-label" for="filter-role">Role</label>
+            <select id="filter-role" class="filter-select" name="filterRole" [(ngModel)]="filterRole">
+              <option value="">All roles</option>
+              <option value="ADMIN">Admin</option>
+              <option value="INSTRUCTOR">Instructor</option>
+              <option value="LEARNER">Learner</option>
+            </select>
+          </div>
+          <div class="filter-panel-field">
+            <label class="filter-label" for="filter-sort">Sort by</label>
+            <select id="filter-sort" class="filter-select" name="sort" [(ngModel)]="selectedSort">
+              <option *ngFor="let opt of sortOptions" [value]="opt.value">{{ opt.label }}</option>
+            </select>
+          </div>
+          <div class="filter-panel-actions">
+            <button type="button" class="btn btn-outline btn-filter-action" (click)="resetFilters()">Reset</button>
+            <button type="button" class="btn btn-primary btn-filter-action" (click)="applyFilters()">Apply</button>
+          </div>
+        </div>
+      </div>
+      <p class="search-hint" *ngIf="!loading && !error && totalElements > 0">
+        Showing {{ users.length }} of {{ totalElements }} user<span *ngIf="totalElements !== 1">s</span>
+        <ng-container *ngIf="searchQuery.trim()"> matching “{{ searchQuery.trim() }}”</ng-container>
+      </p>
+    </div>
+  </header>
+
+  <div class="state-banner error" *ngIf="error" role="alert">
+    <p class="state-banner-text">{{ error }}</p>
+  </div>
+
+  <div class="feedback-banner" *ngIf="feedbackMessage && !loading"
+    [class.feedback-banner-success]="feedbackType === 'success'"
+    [class.feedback-banner-error]="feedbackType === 'error'" role="status" aria-live="polite">
+    <span class="feedback-banner-text">{{ feedbackMessage }}</span>
+    <button type="button" class="feedback-dismiss" (click)="dismissFeedback()" aria-label="Dismiss">×</button>
+  </div>
+
+  <div class="skeleton-list" *ngIf="loading" aria-busy="true" aria-label="Loading users">
+    <div class="skeleton-card" *ngFor="let _ of skeletonSlots">
+      <div class="skeleton skeleton-avatar"></div>
+      <div class="skeleton-block">
+        <div class="skeleton skeleton-line skeleton-line-title"></div>
+        <div class="skeleton skeleton-line skeleton-line-sub"></div>
+      </div>
+      <div class="skeleton-badges">
+        <div class="skeleton skeleton-pill"></div>
+        <div class="skeleton skeleton-pill skeleton-pill-narrow"></div>
+      </div>
+      <div class="skeleton-actions">
+        <div class="skeleton skeleton-btn"></div>
+        <div class="skeleton skeleton-btn"></div>
+        <div class="skeleton skeleton-btn"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="!loading && !error && users.length === 0 && totalElements === 0 && !hasActiveFilters">
+    <div class="empty-state-icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="currentColor"
+        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+        <circle cx="9" cy="7" r="4"></circle>
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"></path>
+      </svg>
+    </div>
+    <h2 class="empty-state-title">No users yet</h2>
+    <p class="empty-state-desc">There are no users on this page. Try another page or check back later.</p>
+  </div>
+
+  <div class="empty-state empty-state-search" *ngIf="!loading && !error && users.length === 0 && hasActiveFilters">
+    <div class="empty-state-icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" fill="none" stroke="currentColor"
+        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+    <h2 class="empty-state-title">No matches</h2>
+    <p class="empty-state-desc">No users match your search or filters. Try different keywords or reset filters.</p>
+    <button type="button" class="btn btn-outline btn-row empty-state-clear" (click)="resetFilters()">Reset filters</button>
+  </div>
+
+  <div class="list-surface" *ngIf="!loading && users.length > 0">
+    <ul class="user-card-list">
+    <li class="user-card" [class.user-card-disabled]="!user.enabled" *ngFor="let user of users">
+      <div class="user-card-media">
+        <img class="user-card-avatar" [src]="user.photoUrl || defaultAvatarUrl"
+          [attr.alt]="'Photo of ' + user.prenom + ' ' + user.nom">
+      </div>
+
+      <div class="user-card-body">
+        <h2 class="user-card-name">{{ user.nom }} {{ user.prenom }}</h2>
+        <p class="user-card-email">{{ user.email }}</p>
+      </div>
+
+      <div class="user-card-badges">
+        <span class="badge badge-role" [ngClass]="{
+            'badge-admin': user.role === 'ADMIN',
+            'badge-learner': user.role === 'LEARNER',
+            'badge-instructor': user.role === 'INSTRUCTOR'
+          }">
+          {{ user.role }}
+        </span>
+        <span class="badge badge-status" [ngClass]="user.enabled ? 'badge-status-active' : 'badge-status-inactive'">
+          {{ user.enabled ? 'Active' : 'Disabled' }}
+        </span>
+      </div>
+
+      <div class="user-card-actions">
+        <button type="button" class="btn btn-ghost btn-row" (click)="openUserDetails(user)"
+          [disabled]="deleteInProgress">View</button>
+        <button type="button" class="btn btn-outline btn-row btn-action-toggle" (click)="toggleStatus(user)"
+          [disabled]="isToggleLoading(user) || deleteInProgress" [attr.aria-busy]="isToggleLoading(user)">
+          <span class="btn-inline-spinner" *ngIf="isToggleLoading(user)" aria-hidden="true"></span>
+          <span *ngIf="!isToggleLoading(user)" class="btn-content">
+            <svg *ngIf="user.enabled" class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+            </svg>
+            <svg *ngIf="!user.enabled" class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2V5a2 2 0 1 0-4 0v4a.5.5 0 0 0 1 0V5a1 1 0 0 1 2 0v1H9a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-1V5a3 3 0 0 0-6 0v4a.5.5 0 0 0 1 0V5a2 2 0 0 1 4 0v1z"/>
+            </svg>
+            {{ user.enabled ? 'Disable' : 'Enable' }}
+          </span>
+        </button>
+        <button type="button" class="btn btn-danger-ghost btn-row" (click)="openDeleteConfirm(user)"
+          [disabled]="deleteInProgress || isToggleLoading(user)">
+          Delete
+        </button>
+      </div>
+    </li>
+  </ul>
+
+  <nav class="pagination-bar" *ngIf="!error && totalPages > 1" aria-label="Pagination">
+    <button type="button" class="btn btn-page" (click)="prevPage()" [disabled]="page === 0">Previous</button>
+    <span class="page-indicator">Page {{ page + 1 }} / {{ totalPages }}</span>
+    <button type="button" class="btn btn-page" (click)="nextPage()" [disabled]="page >= totalPages - 1">Next</button>
+  </nav>
+  </div>
+
+  <div class="modal-overlay" *ngIf="selectedUser" (click)="closeUserDetails()" role="dialog" aria-modal="true"
+    aria-labelledby="details-modal-title">
+    <div class="modal-panel modal-panel-lg" (click)="$event.stopPropagation()">
+      <div class="modal-top">
+        <h2 id="details-modal-title" class="modal-heading">User details</h2>
+        <button type="button" class="modal-close" (click)="closeUserDetails()" aria-label="Close">×</button>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-profile">
+          <img class="modal-avatar" [src]="selectedUser.photoUrl || defaultAvatarUrl"
+            [attr.alt]="'Photo of ' + selectedUser.prenom + ' ' + selectedUser.nom">
+          <div class="modal-profile-text">
+            <p class="modal-name">{{ selectedUser.nom }} {{ selectedUser.prenom }}</p>
+            <p class="modal-email">{{ selectedUser.email }}</p>
+            <div class="modal-badges-row">
+              <span class="badge badge-role" [ngClass]="{
+                  'badge-admin': selectedUser.role === 'ADMIN',
+                  'badge-learner': selectedUser.role === 'LEARNER',
+                  'badge-instructor': selectedUser.role === 'INSTRUCTOR'
+                }">
+                {{ selectedUser.role }}
+              </span>
+              <span class="badge badge-status"
+                [ngClass]="selectedUser.enabled ? 'badge-status-active' : 'badge-status-inactive'">
+                {{ selectedUser.enabled ? 'Active' : 'Disabled' }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-meta" *ngIf="selectedUser.createdAt">
+          <span class="modal-meta-label">Member since</span>
+          <span class="modal-meta-value">{{ selectedUser.createdAt | date:'mediumDate' }}</span>
+        </div>
+
+        <div class="modal-bio" *ngIf="selectedUser.bio">
+          <h3 class="modal-bio-heading">About</h3>
+          <p class="modal-bio-copy">{{ selectedUser.bio }}</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline btn-row" (click)="toggleStatus(selectedUser)"
+          [disabled]="isToggleLoading(selectedUser) || deleteInProgress"
+          [attr.aria-busy]="isToggleLoading(selectedUser)">
+          <span class="btn-inline-spinner" *ngIf="isToggleLoading(selectedUser)" aria-hidden="true"></span>
+          <span *ngIf="!isToggleLoading(selectedUser)" class="btn-content">
+            <svg *ngIf="selectedUser.enabled" class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/>
+            </svg>
+            <svg *ngIf="!selectedUser.enabled" class="btn-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2V5a2 2 0 1 0-4 0v4a.5.5 0 0 0 1 0V5a1 1 0 0 1 2 0v1H9a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-1V5a3 3 0 0 0-6 0v4a.5.5 0 0 0 1 0V5a2 2 0 0 1 4 0v1z"/>
+            </svg>
+            {{ selectedUser.enabled ? 'Disable account' : 'Enable account' }}
+          </span>
+        </button>
+        <button type="button" class="btn btn-danger-outline btn-row" (click)="openDeleteConfirm(selectedUser)"
+          [disabled]="deleteInProgress || isToggleLoading(selectedUser)">
+          Delete user
+        </button>
+        <button type="button" class="btn btn-primary btn-row" (click)="closeUserDetails()"
+          [disabled]="deleteInProgress">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay modal-overlay-confirm" *ngIf="pendingDeleteUser" (click)="closeDeleteConfirm()"
+    role="dialog" aria-modal="true" aria-labelledby="confirm-delete-title">
+    <div class="modal-panel modal-panel-sm" (click)="$event.stopPropagation()">
+      <div class="modal-top">
+        <h2 id="confirm-delete-title" class="modal-heading">Remove user?</h2>
+        <button type="button" class="modal-close" (click)="closeDeleteConfirm()" aria-label="Close"
+          [disabled]="deleteInProgress">×</button>
+      </div>
+      <p class="confirm-body">
+        This will permanently delete
+        <strong class="confirm-name">{{ pendingDeleteUser.prenom }} {{ pendingDeleteUser.nom }}</strong>
+        (<span class="confirm-email">{{ pendingDeleteUser.email }}</span>). This action cannot be undone.
+      </p>
+      <div class="modal-footer modal-footer-split">
+        <button type="button" class="btn btn-outline btn-block-sm" (click)="closeDeleteConfirm()"
+          [disabled]="deleteInProgress">Cancel</button>
+        <button type="button" class="btn btn-danger btn-block-sm btn-loading-wrap"
+          (click)="deleteUser(pendingDeleteUser.id)" [disabled]="deleteInProgress">
+          <span class="btn-inline-spinner" *ngIf="deleteInProgress" aria-hidden="true"></span>
+          <span>{{ deleteInProgress ? 'Deleting…' : 'Delete user' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

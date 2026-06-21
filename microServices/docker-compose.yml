@@ -1,0 +1,74 @@
+services:
+
+  eureka-server:
+    build:
+      context: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_DATABASE: user-service
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  user-service:
+    build:
+      context: ./user-service
+    container_name: user-service
+    ports:
+      - "8082:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/user-service?createDatabaseIfNotExist=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+    depends_on:
+      - mysql
+      - eureka-server
+
+  gateway:
+    build:
+      context: ./Gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+    depends_on:
+      - eureka-server
+      - user-service
+
+  mongodb:
+    image: mongo:7
+    container_name: mongodb-db
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  notification-service:
+    build:
+      context: ./notification-service
+    container_name: notification-service
+    ports:
+      - "3001:3000"
+    environment:
+      PORT: 3000
+      MONGO_URI: mongodb://mongodb:27017/notificationsdb
+      SERVICE_NAME: notification-service
+      EUREKA_HOST: eureka-server
+      EUREKA_PORT: 8761
+    depends_on:
+      - mongodb
+      - eureka-server
+
+volumes:
+  mysql_data:
+  mongodb_data:

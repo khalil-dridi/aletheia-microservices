@@ -1,0 +1,39 @@
+﻿<section class="tfa-setup">
+  <header class="tfa-setup__head">
+    <h1>Authentification à deux facteurs (TOTP)</h1>
+    <p>Scannez le QR code avec Google Authenticator ou une application compatible, puis confirmez avec un code à 6 chiffres.</p>
+  </header>
+
+  <div class="tfa-setup__actions">
+    <button type="button" class="tfa-btn" (click)="startSetup()" [disabled]="loading">
+      {{ qr ? ''Régénérer le QR code'' : ''Générer le QR code'' }}
+    </button>
+  </div>
+
+  <div *ngIf="qr" class="tfa-setup__qr">
+    <img [src]="qr" alt="QR code TOTP" width="220" height="220" />
+    <p class="tfa-setup__manual" *ngIf="otpUrl">
+      <span>Saisie manuelle (otpauth) :</span>
+      <code>{{ otpUrl }}</code>
+    </p>
+  </div>
+
+  <div *ngIf="qr" class="tfa-setup__confirm">
+    <label for="tfa-code">Code de vérification</label>
+    <input
+      id="tfa-code"
+      type="text"
+      maxlength="6"
+      inputmode="numeric"
+      [(ngModel)]="code"
+      name="tfaCode"
+      [disabled]="loading"
+    />
+    <button type="button" class="tfa-btn tfa-btn--secondary" (click)="confirm()" [disabled]="loading">
+      Activer le 2FA
+    </button>
+  </div>
+
+  <p *ngIf="msg" class="tfa-msg tfa-msg--ok" role="status">{{ msg }}</p>
+  <p *ngIf="err" class="tfa-msg tfa-msg--err" role="alert">{{ err }}</p>
+</section>

@@ -1,1 +1,99 @@
-<p>profile works!</p>
+
+<section class="edit-profile-page" aria-label="Edit profile page">
+  <div class="edit-profile-shell">
+    <button class="back-btn" routerLink="/user/sidesettings">
+  ← Back
+</button>
+
+    <div class="edit-profile-grid">
+
+
+      <section class="profile-detail-card card" aria-labelledby="personal-info-title">
+        <div class="card-header">
+          <p class="section-label">Personal info</p>
+          <h2 id="personal-info-title">Update your account details</h2>
+          <p class="section-copy">
+            These details are used across your dashboard, certificates, and support profile.
+          </p>
+        </div>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <form class="edit-form">
+
+  <div class="edit-form__grid edit-form__grid--two">
+
+    <div class="field">
+      <label class="field__label" for="firstName">First name</label>
+      <input  
+        id="firstName" 
+        class="field__input" 
+        type="text"
+        [(ngModel)]="prenom"
+        name="prenom">
+    </div>
+
+    <div class="field">
+      <label class="field__label" for="lastName">Last name</label>
+      <input 
+        id="lastName" 
+        class="field__input" 
+        type="text"
+        [(ngModel)]="nom"
+        name="nom">
+    </div>
+
+  </div>
+
+  <div class="edit-form__grid">
+    <div class="field">
+      <label class="field__label" for="bio">Bio</label>
+      <textarea 
+        id="bio" 
+        class="field__textarea" 
+        rows="5"
+        [(ngModel)]="bio"
+        name="bio"
+        placeholder="Share a short intro about your learning goals...">
+      </textarea>
+    </div>
+  </div>
+
+  <div class="edit-actions" aria-label="Form actions">
+    <button 
+      class="btn btn--primary" 
+      type="button"
+      (click)="confirmAndSave()">
+      Save changes
+    </button>
+
+    <button 
+      class="btn btn--outline" 
+      type="button">
+      Cancel
+    </button>
+  </div>
+
+</form>
+        
+      </section>
+    </div>
+  </div>
+</section>
+
+<app-confirm-dialog (confirmed)="onConfirmDialogResult($event)"></app-confirm-dialog>

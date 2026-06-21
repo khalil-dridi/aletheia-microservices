@@ -1,0 +1,419 @@
+/* =========================================
+   ALETHEIA ADMIN SIDEBAR
+   Same design system as user sidebar.
+   ========================================= */
+
+/* -----------------------------------------
+   THEME – CSS variables (match user sidebar)
+   ----------------------------------------- */
+.admin-sidebar {
+  /* Dimensions – same width behavior as user sidebar */
+  --admin-sidebar-width-expanded: 280px;
+  --admin-sidebar-width-collapsed: 84px;
+  --admin-sidebar-width-mobile: 80px;
+
+  /* Palette ALETHEIA: violet / lavande / or / bleu */
+  --admin-bg-glass: rgba(43, 30, 70, 0.45);
+  --admin-bg-glass-hover: rgba(65, 48, 100, 0.6);
+  --admin-bg-glass-active: rgba(85, 65, 130, 0.7);
+  --admin-border-glass: rgba(255, 255, 255, 0.12);
+  --admin-border-glow: rgba(212, 175, 55, 0.6);
+  --admin-text-main: #f8f8fa;
+  --admin-text-muted: #b8b2c6;
+  --admin-accent-primary: #d4af37;
+  --admin-accent-secondary: #8bb8f8;
+  --admin-accent-danger: #e26d6d;
+
+  /* Typography & spacing */
+  --admin-font: 'Inter', system-ui, -apple-system, sans-serif;
+  --admin-gap-sm: 8px;
+  --admin-gap-md: 16px;
+  --admin-gap-lg: 24px;
+  --admin-radius-sm: 8px;
+  --admin-radius-md: 14px;
+  --admin-radius-full: 9999px;
+
+  /* Animation: 200–300ms ease-in-out */
+  --admin-transition-fast: 150ms ease;
+  --admin-transition-smooth: 260ms ease-in-out;
+
+  /* Layout for collapsed vs expanded */
+  --admin-sidebar-pad: var(--admin-gap-md);
+  --admin-nav-pad-x: 10px;
+}
+
+/* -----------------------------------------
+   1. STRUCTURE & GLASSMORPHISM
+   ----------------------------------------- */
+.admin-sidebar {
+  width: var(--admin-sidebar-width-collapsed);
+  height: 100vh;
+  background: var(--admin-bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--admin-border-glass);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--admin-font);
+  color: var(--admin-text-main);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: width var(--admin-transition-smooth), background var(--admin-transition-smooth), box-shadow var(--admin-transition-smooth);
+}
+
+.admin-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb {
+  background: var(--admin-border-glass);
+  border-radius: var(--admin-radius-full);
+}
+
+/* -----------------------------------------
+   HOVER EXPAND (no JS)
+   Collapsed by default → expand on hover/focus-within
+   Subtle glow when expanded
+   ----------------------------------------- */
+.admin-sidebar:hover,
+.admin-sidebar:focus-within {
+  width: var(--admin-sidebar-width-expanded);
+  background: var(--admin-bg-glass-hover);
+  box-shadow:
+    8px 0 34px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(212, 175, 55, 0.12),
+    0 0 40px rgba(212, 175, 55, 0.12);
+  --admin-sidebar-pad: var(--admin-gap-lg);
+  --admin-nav-pad-x: 14px;
+}
+
+/* -----------------------------------------
+   2. HEADER – Admin profile (avatar, name, role)
+   ----------------------------------------- */
+.admin-sidebar__header {
+  padding: var(--admin-sidebar-pad);
+  border-bottom: 1px solid var(--admin-border-glass);
+  display: flex;
+  justify-content: center;
+}
+
+.admin-sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-gap-sm);
+  width: 100%;
+  justify-content: center;
+}
+
+.admin-sidebar__avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.admin-sidebar__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--admin-radius-full);
+  object-fit: cover;
+  border: 2px solid var(--admin-border-glass);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+  transition: transform var(--admin-transition-smooth), border-color var(--admin-transition-fast);
+}
+
+.admin-sidebar__user:hover .admin-sidebar__avatar {
+  transform: scale(1.05);
+  border-color: var(--admin-accent-secondary);
+}
+
+.admin-sidebar__status {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background-color: #4ade80;
+  border: 2px solid rgba(43, 30, 70, 0.9);
+  border-radius: var(--admin-radius-full);
+  box-shadow: 0 0 6px #4ade80;
+}
+
+.admin-sidebar__user-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: opacity var(--admin-transition-smooth), transform var(--admin-transition-smooth);
+}
+
+.admin-sidebar__user-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 2px 0;
+  color: var(--admin-text-main);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.admin-sidebar__user-role {
+  font-size: 0.75rem;
+  color: var(--admin-text-muted);
+  font-weight: 400;
+}
+
+/* -----------------------------------------
+   3. NAVIGATION
+   ----------------------------------------- */
+.admin-sidebar__nav {
+  flex: 1;
+  padding: 0 var(--admin-gap-md);
+  margin-top: var(--admin-gap-sm);
+}
+
+.admin-sidebar__nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--admin-gap-sm);
+}
+
+.admin-sidebar__nav-item {
+  list-style: none;
+}
+
+.admin-sidebar__nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--admin-gap-md);
+  padding: 10px var(--admin-nav-pad-x);
+  text-decoration: none;
+  color: var(--admin-text-muted);
+  border-radius: var(--admin-radius-md);
+  position: relative;
+  transition: all var(--admin-transition-smooth);
+  outline: none;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.admin-sidebar__nav-link:hover {
+  background: var(--admin-bg-glass-hover);
+  color: var(--admin-text-main);
+  transform: translateY(-1px);
+}
+
+.admin-sidebar__nav-link:focus-visible {
+  outline: 2px solid var(--admin-accent-secondary);
+  outline-offset: -2px;
+}
+
+.admin-sidebar__nav-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  transition: transform var(--admin-transition-smooth), color var(--admin-transition-fast);
+}
+
+.admin-sidebar__nav-link:hover .admin-sidebar__nav-icon {
+  transform: scale(1.1);
+  color: var(--admin-accent-primary);
+}
+
+.admin-sidebar__nav-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  flex: 1;
+  transition: opacity var(--admin-transition-smooth), transform var(--admin-transition-smooth);
+}
+
+/* Active item indicator */
+.admin-sidebar__nav-link--active {
+  background: var(--admin-bg-glass-active);
+  color: var(--admin-text-main);
+}
+
+.admin-sidebar__nav-link--active .admin-sidebar__nav-icon {
+  color: var(--admin-accent-primary);
+}
+
+.admin-sidebar__nav-link--active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 4px;
+  background: var(--admin-accent-primary);
+  border-radius: 0 var(--admin-radius-full) var(--admin-radius-full) 0;
+  box-shadow: 2px 0 8px var(--admin-border-glow);
+}
+
+/* -----------------------------------------
+   4. FOOTER – Logout (danger style)
+   ----------------------------------------- */
+.admin-sidebar__footer {
+  padding: var(--admin-sidebar-pad);
+  margin-top: auto;
+  border-top: 1px solid var(--admin-border-glass);
+  display: flex;
+  justify-content: center;
+}
+
+.admin-sidebar__btn-logout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--admin-gap-md);
+  padding: 12px 14px;
+  background: transparent;
+  border: 1px solid var(--admin-border-glass);
+  border-radius: var(--admin-radius-md);
+  color: var(--admin-text-muted);
+  cursor: pointer;
+  transition: all var(--admin-transition-smooth);
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  outline: none;
+  justify-content: center;
+}
+
+.admin-sidebar__btn-logout:hover {
+  background: rgba(226, 109, 109, 0.1);
+  border-color: rgba(226, 109, 109, 0.4);
+  color: var(--admin-accent-danger);
+}
+
+.admin-sidebar__btn-logout:focus-visible {
+  outline: 2px solid var(--admin-accent-danger);
+  outline-offset: 2px;
+}
+
+.admin-sidebar__btn-logout:hover .admin-sidebar__nav-icon {
+  transform: translateX(4px);
+  color: var(--admin-accent-danger);
+}
+
+.admin-sidebar__btn-text {
+  transition: opacity var(--admin-transition-smooth), transform var(--admin-transition-smooth);
+}
+
+/* -----------------------------------------
+   5. COLLAPSED → EXPANDED CONTENT ANIMATION
+   Hide labels/details when collapsed, reveal on hover/focus
+   ----------------------------------------- */
+.admin-sidebar:not(:hover):not(:focus-within) .admin-sidebar__user-details,
+.admin-sidebar:not(:hover):not(:focus-within) .admin-sidebar__nav-label,
+.admin-sidebar:not(:hover):not(:focus-within) .admin-sidebar__btn-text {
+  opacity: 0;
+  transform: translateX(-6px);
+  pointer-events: none;
+}
+
+.admin-sidebar:hover .admin-sidebar__header,
+.admin-sidebar:focus-within .admin-sidebar__header,
+.admin-sidebar:hover .admin-sidebar__user,
+.admin-sidebar:focus-within .admin-sidebar__user,
+.admin-sidebar:hover .admin-sidebar__footer,
+.admin-sidebar:focus-within .admin-sidebar__footer {
+  justify-content: flex-start;
+}
+
+.admin-sidebar:hover .admin-sidebar__nav-link,
+.admin-sidebar:focus-within .admin-sidebar__nav-link,
+.admin-sidebar:hover .admin-sidebar__btn-logout,
+.admin-sidebar:focus-within .admin-sidebar__btn-logout {
+  justify-content: flex-start;
+}
+
+.admin-sidebar:hover .admin-sidebar__user-details,
+.admin-sidebar:focus-within .admin-sidebar__user-details,
+.admin-sidebar:hover .admin-sidebar__nav-label,
+.admin-sidebar:focus-within .admin-sidebar__nav-label,
+.admin-sidebar:hover .admin-sidebar__btn-text,
+.admin-sidebar:focus-within .admin-sidebar__btn-text {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.admin-sidebar:not(:hover):not(:focus-within) .admin-sidebar__nav-link--active::before {
+  top: 20%;
+  height: 60%;
+}
+
+/* -----------------------------------------
+   6. RESPONSIVE
+   ----------------------------------------- */
+@media screen and (max-width: 768px) {
+  .admin-sidebar {
+    width: var(--admin-sidebar-width-mobile);
+  }
+
+  .admin-sidebar__user-details,
+  .admin-sidebar__nav-label,
+  .admin-sidebar__btn-text {
+    display: none;
+  }
+
+  .admin-sidebar__header,
+  .admin-sidebar__user,
+  .admin-sidebar__footer {
+    padding: var(--admin-gap-md) 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .admin-sidebar__avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .admin-sidebar__status {
+    width: 10px;
+    height: 10px;
+    border-width: 1px;
+  }
+
+  .admin-sidebar__nav {
+    padding: 0 var(--admin-gap-sm);
+  }
+
+  .admin-sidebar__nav-link {
+    justify-content: center;
+    padding: 12px 0;
+  }
+
+  .admin-sidebar__nav-link--active::before {
+    top: 20%;
+    height: 60%;
+    width: 3px;
+  }
+
+  .admin-sidebar__btn-logout {
+    padding: 10px;
+    justify-content: center;
+  }
+
+  .admin-sidebar__btn-logout:hover .admin-sidebar__nav-icon {
+    transform: none;
+    color: var(--admin-accent-danger);
+  }
+
+  /* No hover expand on mobile */
+  .admin-sidebar:hover,
+  .admin-sidebar:focus-within {
+    width: var(--admin-sidebar-width-mobile);
+    --admin-sidebar-pad: var(--admin-gap-md);
+    --admin-nav-pad-x: 10px;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+    background: var(--admin-bg-glass);
+  }
+}

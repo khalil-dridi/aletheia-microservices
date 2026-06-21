@@ -1,0 +1,94 @@
+<!-- Section Learner -->
+ 
+<aside class="sidebar" aria-label="Menu principal">
+  <!-- 1. En-tête / Logo -->
+  <header class="sidebar__header">
+    <a href="#" class="brand" aria-label="Accueil">
+      <svg class="brand__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2L2 22h20L12 2z"/></svg>
+      <h1 class="brand__name">ALETHEIA</h1>
+    </a>
+  </header>
+
+  <!-- 2. Profil -->
+  <div class="sidebar__user">
+    <div class="avatar-wrapper">
+<img *ngIf="user" [src]="user.photoUrl" class="avatar" alt="Avatar"> </div>
+    <div class="user-details">
+      <h2 class="user-name">{{ user?.prenom }} {{ user?.nom }}</h2>
+      <span class="user-role">{{ user?.role }}</span>
+    </div>
+  </div>
+
+  <!-- 3. Navigation -->
+  <nav class="sidebar__nav" role="navigation">
+    <ul class="nav-list">
+      <li class="nav-item">
+        <a class="nav-link is-active" aria-current="page" routerLink="/user/dashboard">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+          <span class="nav-label">Dashboard</span>
+          
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          <span class="nav-label">Mes Cours</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="nav-label">Communauté</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+          <span class="nav-label">Certificats</span>
+          <span class="badge" aria-label="1 nouveau">1</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link" routerLink="/user/notifications">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="nav-label">Notifications</span>
+          <span class="badge badge--urgent" aria-label="5 urgents">5</span>
+        </a>
+      </li>
+      <li class="nav-item nav-item--settings">
+        
+        <a class="nav-link" routerLink="/user/sidesettings">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          <span class="nav-label">Paramètres</span>
+        </a>
+
+      </li>
+    </ul>
+  </nav>
+
+  <!-- 4. Footer: Theme toggle + Déconnexion -->
+  <footer class="sidebar__footer">
+    <!-- Light / Dark mode toggle (matches navbar style) -->
+    <button
+      type="button"
+      class="sidebar__theme-toggle"
+      (click)="themeService.toggleTheme()"
+      [attr.aria-label]="(themeService.isDark$ | async) ? 'Passer en mode clair' : 'Passer en mode sombre'"
+      [title]="(themeService.isDark$ | async) ? 'Mode clair' : 'Mode sombre'">
+      <svg *ngIf="!(themeService.isDark$ | async)" class="sidebar__theme-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <svg *ngIf="themeService.isDark$ | async" class="sidebar__theme-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/>
+        <path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button type="button" class="btn-logout" (click)="logout()" aria-label="Se déconnecter">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <span class="btn-text">Déconnexion</span>
+    </button>
+  </footer>
+</aside>
+
+
+<!-- Section Admin -->

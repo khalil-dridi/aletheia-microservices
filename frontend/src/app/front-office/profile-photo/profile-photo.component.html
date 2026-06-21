@@ -1,0 +1,107 @@
+<section class="profile-photo-page" aria-label="Profile photo settings">
+  <button class="back-btn" routerLink="/user/sidesettings">
+    ← Back
+  </button>
+
+  <div class="profile-photo-container">
+    <div class="profile-photo-content">
+      <h1 class="page-title">Update Profile Photo</h1>
+      <p class="page-subtitle">Choose a new profile picture (Max 2MB, JPEG/PNG/GIF/WebP)</p>
+
+      <!-- Alert Messages -->
+      <div class="alert alert--error" *ngIf="uploadError" role="alert">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="m15 9-6 6M9 9l6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="alert__text">{{ uploadError }}</span>
+      </div>
+
+      <div class="alert alert--success" *ngIf="uploadSuccess" role="alert">
+        <svg class="alert__icon" viewBox="0 0 24 24" fill="none">
+          <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="alert__text">Photo uploaded successfully!</span>
+      </div>
+
+      <div class="photo-upload-area">
+        <!-- Current Photo Display -->
+        <div class="current-photo-section">
+          <h2 class="section-title">Current Photo</h2>
+          <div class="photo-display">
+            <img 
+              [src]="getPhotoUrl()" 
+              [alt]="getUserAltText()"
+              class="photo-image"
+            />
+          </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="upload-section">
+          <h2 class="section-title">Upload New Photo</h2>
+          
+          <!-- File Input -->
+          <div class="file-input-wrapper" 
+               [class.drag-over]="isDragOver"
+               (dragover)="onDragOver($event)"
+               (dragleave)="onDragLeave($event)"
+               (drop)="onDrop($event)">
+            <input
+              #fileInput
+              id="fileInput"
+              type="file"
+              accept="image/*"
+              class="file-input"
+              (change)="onFileSelected($event)"
+              aria-label="Select image file"
+            />
+            <label class="file-input-label" for="fileInput">
+              <svg class="file-input-icon" viewBox="0 0 24 24" fill="none">
+                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-. 9-2zm13-6h-8v13H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2h10l4-4z" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              <span class="file-input-text">Click to select image or drag and drop</span>
+            </label>
+          </div>
+
+          <!-- Preview Section -->
+          <div class="preview-section" *ngIf="previewUrl">
+            <h2 class="section-title">Preview</h2>
+            <div class="photo-display preview">
+              <img [src]="previewUrl" alt="Image preview" class="photo-image" />
+            </div>
+            <p class="preview-info">{{ selectedFile?.name }}</p>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="button-group">
+            <button
+              type="button"
+              class="btn btn--secondary"
+              (click)="onCancel()"
+              [disabled]="isUploading"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn--primary"
+              (click)="onUpload()"
+              [disabled]="isUploadDisabled()"
+              [attr.aria-busy]="isUploading"
+            >
+              <span *ngIf="!isUploading">Upload Photo</span>
+              <span *ngIf="isUploading">Uploading...</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Confirm Dialog -->
+<app-confirm-dialog
+  (confirmed)="onDialogConfirmed($event)">
+</app-confirm-dialog>
+

@@ -82,10 +82,18 @@
           </label>
           <a href="#" class="forgot-link" aria-label="Mot de passe oublié">Mot de passe oublié ?</a>
         </div>
-
-        <button type="button" class="btn-primary" aria-label="Se connecter" (click)="login()">
-          Se connecter
-        </button>
+        <div *ngIf="errorMsg" role="alert" aria-live="assertive" class="message message-error">
+          {{ errorMsg }}
+        </div>
+        <button type="button"
+        class="btn-primary"
+        aria-label="Se connecter"
+        (click)="login()"
+        [disabled]="loading">
+  <!-- Affiche texte différent selon l'état loading -->
+  <span *ngIf="!loading">Se connecter</span>
+  <span *ngIf="loading">Connexion...</span>
+</button>
       </form>
 
       <div class="divider" aria-hidden="true">

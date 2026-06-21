@@ -1,0 +1,459 @@
+/* =========================================
+   THEME – modifier ici (Variables CSS)
+   ========================================= */
+.sidebar {
+  /* Dimensions */
+  /* Expanded / collapsed sizes for hover-expand behavior */
+  --sidebar-width: 280px; /* legacy token (expanded) */
+  --sidebar-width-expanded: 280px;
+  --sidebar-width-collapsed: 84px;
+  --sidebar-width-mobile: 80px;
+
+  /* Palette ALETHEIA : Violet / Lavande / Or / Bleu / Blanc cassé */
+  --bg-glass: rgba(43, 30, 70, 0.45);
+  --bg-glass-hover: rgba(65, 48, 100, 0.6);
+  --bg-glass-active: rgba(85, 65, 130, 0.7);
+  
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-glow: rgba(212, 175, 55, 0.6);
+
+  --text-main: #f8f8fa;
+  --text-muted: #b8b2c6;
+
+  --accent-primary: #d4af37;
+  --accent-secondary: #8bb8f8;
+  --accent-danger: #e26d6d;
+
+  /* Typographie & Espacements */
+  --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  --gap-sm: 8px;
+  --gap-md: 16px;
+  --gap-lg: 24px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-full: 9999px;
+
+  /* Animations & Transitions */
+  --transition-fast: 150ms ease;
+  /* Requirements: 200–300ms + ease-in-out */
+  --transition-smooth: 260ms ease-in-out;
+
+  /* Layout helpers for permanent expanded state */
+  --sidebar-pad: var(--gap-lg);
+  --nav-pad-x: 14px;
+}
+
+/* =========================================
+   1. STRUCTURE & GLASSMORPHISM
+   ========================================= */
+.sidebar {
+  /* Always expanded - no hover behavior */
+  width: var(--sidebar-width-expanded);
+  height: 100vh;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--border-glass);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family);
+  color: var(--text-main);
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1000; /* sits above page content but below modals/alerts */
+  overflow-y: auto;
+  overflow-x: visible;
+  /* Removed transition for permanent expanded state */
+}
+
+/* Main content always uses expanded margin */
+main.app-content {
+  margin-left: var(--main-margin-left-expanded);
+  /* Removed transition for permanent expanded state */
+}
+
+/* mobile behaviour: sidebar becomes a drawer */
+@media (max-width: 767px) {
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    width: var(--sidebar-width-mobile);
+  }
+  .sidebar.open {
+    left: 0;
+    background: var(--bg-glass-active);
+  }
+  main.app-content {
+    margin-left: 0;
+  }
+}
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border-glass); border-radius: var(--radius-full); }
+
+/* =========================================
+   2. HEADER & LOGO
+   ========================================= */
+.sidebar__header {
+  /* Uses variable padding so collapsed feels compact */
+  padding: var(--sidebar-pad);
+  border-bottom: 1px solid var(--border-glass);
+  display: flex;
+  justify-content: center;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+  text-decoration: none;
+  color: var(--text-main);
+  outline: none;
+  /* Removed hover transitions for static behavior */
+}
+.brand:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 4px;
+  border-radius: var(--radius-sm);
+}
+.brand__icon {
+  width: 28px;
+  height: 28px;
+  color: var(--accent-primary);
+  filter: drop-shadow(0 0 8px var(--border-glow));
+}
+.brand__name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin: 0;
+  background: linear-gradient(90deg, #fff, var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* Removed hover transitions for static behavior */
+}
+
+/* =========================================
+   3. PROFIL UTILISATEUR
+   ========================================= */
+.sidebar__user {
+  padding: var(--sidebar-pad);
+  display: flex;
+  align-items: center;
+  gap: var(--gap-sm);
+  justify-content: center;
+}
+.avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  object-fit: cover;
+  border: 2px solid var(--border-glass);
+  box-shadow: 0 0 15px rgba(255,255,255, 0.1);
+  /* Removed hover transitions for static behavior */
+}
+.status-badge {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background-color: #4ade80;
+  border: 2px solid rgba(43, 30, 70, 0.9);
+  border-radius: var(--radius-full);
+  box-shadow: 0 0 6px #4ade80;
+}
+.user-details {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  white-space: nowrap;
+  /* Removed hover transitions for static behavior */
+}
+.user-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 2px 0;
+  color: var(--text-main);
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.user-role {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* =========================================
+   4. NAVIGATION
+   ========================================= */
+.sidebar__nav {
+  flex: 1;
+  padding: 0 var(--gap-md);
+  margin-top: var(--gap-sm);
+}
+.nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-sm);
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+  padding: 10px var(--nav-pad-x);
+  text-decoration: none;
+  color: var(--text-muted);
+  border-radius: var(--radius-md);
+  position: relative;
+  /* Removed hover transitions for static behavior */
+  outline: none;
+  overflow: hidden;
+  justify-content: flex-start; /* Always expanded */
+}
+.nav-link:focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: -2px;
+}
+.nav-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  /* Removed hover transitions for static behavior */
+}
+.nav-label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  flex: 1;
+  /* Removed hover transitions for static behavior */
+}
+
+/* État actif */
+.nav-link.is-active {
+  background: var(--bg-glass-active);
+  color: var(--text-main);
+}
+.nav-link.is-active .nav-icon {
+  color: var(--accent-primary);
+}
+.nav-link.is-active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 15%;
+  height: 70%;
+  width: 4px;
+  background: var(--accent-primary);
+  border-radius: 0 var(--radius-full) var(--radius-full) 0;
+  box-shadow: 2px 0 8px var(--border-glow);
+}
+
+/* Badges */
+.badge {
+  background: var(--bg-glass-hover);
+  color: var(--text-main);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-glass);
+  /* Removed hover transitions for static behavior */
+}
+.badge--urgent {
+  background: var(--accent-danger);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(226, 109, 109, 0.4);
+  border-color: transparent;
+}
+
+/* =========================================
+   4.1. SETTINGS FLOATING SUBMENU
+   ========================================= */
+.nav-item--settings {
+  position: relative;
+}
+
+.settings-submenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 10px;
+  right: 10px;
+  transform: translateY(-6px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 180px;
+  padding: 8px;
+  border-radius: 12px;
+  background: var(--bg-glass-hover);
+  border: 1px solid var(--border-glass);
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  z-index: 1100;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0.3s ease;
+}
+
+/* Hover-bridge to prevent submenu flicker:
+   covers the 8px gap between the main item and submenu so the cursor can move down. */
+.settings-submenu::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -12px;
+  height: 12px;
+  background: transparent;
+}
+
+.nav-item--settings:hover .settings-submenu,
+.nav-item--settings:focus-within .settings-submenu,
+.nav-item--settings .nav-link:hover + .settings-submenu,
+.settings-submenu:hover {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.settings-submenu__item {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: background var(--transition-smooth), color var(--transition-smooth), transform var(--transition-smooth);
+}
+
+.settings-submenu__item:hover {
+  background: var(--bg-glass-active);
+  color: var(--text-main);
+  transform: translateX(2px);
+}
+
+.settings-submenu__item:focus-visible {
+  outline: 2px solid var(--accent-secondary);
+  outline-offset: 2px;
+}
+
+.settings-submenu__label {
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 768px) {
+  .settings-submenu {
+    display: none;
+  }
+}
+
+/* =========================================
+   5. FOOTER – Theme toggle + Déconnexion
+   ========================================= */
+.sidebar__footer {
+  padding: var(--sidebar-pad);
+  margin-top: auto;
+  border-top: 1px solid var(--border-glass);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--gap-sm);
+  justify-content: center;
+}
+
+/* Theme toggle button – visual match to navbar .theme-toggle */
+.sidebar__theme-toggle {
+  background: transparent;
+  border: 2px solid rgba(212, 175, 55, 0.35);
+  border-radius: var(--radius-sm);
+  width: 2.75rem;
+  height: 2.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--accent-primary);
+  /* Removed hover transitions for static behavior */
+  outline: none;
+  flex-shrink: 0;
+}
+.sidebar__theme-toggle:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 2px;
+}
+.sidebar__theme-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  transition: transform 0.3s ease;
+}
+
+.btn-logout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--gap-md);
+  padding: 12px 14px;
+  background: transparent;
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  cursor: pointer;
+  /* Removed hover transitions for static behavior */
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  outline: none;
+  justify-content: center; /* collapsed default */
+}
+
+/* =========================================
+   6. RESPONSIVE
+   ========================================= */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: var(--sidebar-width-mobile);
+  }
+  .brand__name, .user-details, .nav-label, .badge, .btn-text {
+    display: none;
+  }
+  .sidebar__header, .sidebar__user, .sidebar__footer {
+    padding: var(--gap-md) 0;
+    display: flex;
+    justify-content: center;
+  }
+  .brand__icon { margin: 0; }
+  .avatar { width: 36px; height: 36px; }
+  .status-badge { width: 10px; height: 10px; border-width: 1px; }
+  .sidebar__nav { padding: 0 var(--gap-sm); }
+  .nav-link { justify-content: center; padding: 12px 0; }
+  .nav-link.is-active::before { top: 20%; height: 60%; width: 3px; }
+  .btn-logout { padding: 10px; justify-content: center; }
+  .btn-logout:hover .nav-icon { transform: none; color: var(--accent-danger); }
+
+
+}
