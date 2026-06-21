@@ -286,6 +286,14 @@ USER-AUTH-SERVICE
  Swagger UI
 ```
 
+
+<img width="1917" height="966" alt="image" src="https://github.com/user-attachments/assets/e16f245d-e2bf-466c-9227-3b0752769ef1" />
+
+
+
+<img width="1902" height="912" alt="image" src="https://github.com/user-attachments/assets/60d7e3d0-43fa-40e6-a4b5-01a7bfa76dea" />
+
+
 This implementation allows developers and testers to access all exposed endpoints through a unified documentation portal.
 
 ---
